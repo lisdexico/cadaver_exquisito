@@ -116,6 +116,10 @@ app.post('/write/:id', (req,res)=> {
   res.sendFile(dirname + '/public/home.html');
 });
 
+app.get('/search', (req,res)=> {
+  res.sendFile(__dirname + '/public/search.html');
+});
+
 app.listen(3000, function () {
     console.log('The app is listening on port 3000!!');
 });
