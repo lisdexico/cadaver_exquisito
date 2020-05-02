@@ -15,22 +15,22 @@ db.once('open', function(){
 
 var mainSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
-  Title: {
+  title: {
     Type: String
     //required: true,
     //maxlength: 100
   },
-  Description: {
+  description: {
     Type: String
     //maxlength: 140
   },
-  Author: String,
-  Created:{
+  author: String,
+  created:{
     type: Date,
     default: Date.now
   },
-  Status:{
-  Type: Boolean
+  status:{
+  type: Boolean
   //default: true
   },
   pswd:{
@@ -41,15 +41,15 @@ var mainSchema = mongoose.Schema({
 
 var textSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
-  Parrafo:{
+  parrafo:{
     type: String,
     required: true,
   },
-  Id_text:{
+  idText:{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Main'
   },
-  Created:{
+  created:{
     type: Date,
     default: Date.now
   }
@@ -64,22 +64,22 @@ app.get('/', (req,res)=> {
 });
 
 app.get('/create', (req,res)=> {
-  res.sendFile(dirname + '/public/create.html');
+  res.sendFile(__dirname + '/public/create.html');
 });
 
 app.get('/write/:id', (req,res)=> {
   //meter handlebars para mandar id y para renderear el Parrafo
   var lastparragraph = text.findOne({txt_id: req.params.id }.sort({ _id: -1 }).limit(1), function(err, user) {
     if(err) console.log(err)});
-  res.sendFile(dirname + '/public/write.html');
+  res.sendFile(__dirname + '/public/write.html');
 });
 
 app.post('/create', (req,res)=> {
   var newText = new main({
     _id: new mongoose.Types.ObjectId(),
-    Title: req.body.title,
-    Description: req.body.Description,
-    Author: req.body.author,
+    title: req.body.title,
+    description: req.body.description,
+    author: req.body.author,
     pswd: req.body.pswd
   });
   newText.save((err)=>{
@@ -90,7 +90,7 @@ app.post('/create', (req,res)=> {
   var newParrafo = new text ({
     _id: new mongoose.Types.ObjectId(),
     parrafo: req.body.parragraph,
-    id_txt: newText._id
+    idText: newText._id
   });
   newParrafo.save((err)=>{
     if(err) throw err;
@@ -98,7 +98,7 @@ app.post('/create', (req,res)=> {
     console.log(newParrafo);
   });
 
-  res.sendFile(dirname + '/public/home.html');
+  res.sendFile(__dirname + '/public/home.html');
 });
 
 app.post('/write/:id', (req,res)=> {
@@ -113,7 +113,7 @@ app.post('/write/:id', (req,res)=> {
     console.log(newParrafo);
   });
 
-  res.sendFile(dirname + '/public/home.html');
+  res.sendFile(__dirname + '/public/home.html');
 });
 
 app.get('/search', (req,res)=> {
